@@ -35,9 +35,131 @@ STEP-5: Display the obtained cipher text.
 
 
 Program:
-
-
-
-
+```
+#include <stdio.h>
+#include <string.h>
+Program:
+#include <ctype.h>
+char keyTable[5][5];
+// Generate the key table
+void generateKeyTable(char key[])
+{
+ int used[26] = {0};
+ int i, j, k = 0;
+ used['J' - 'A'] = 1; // Ignore J
+ for(i = 0; key[i] != '\0'; i++)
+TABLE FORMAT:
+ { 
+ char ch = toupper(key[i]);
+ if(ch == 'J') 
+ ch = 'I';
+ if(!used[ch - 'A']) 
+ { 
+ keyTable[k / 5][k % 5] = ch;
+ used[ch - 'A'] = 1;
+ k++;
+ } 
+ } 
+ for(i = 0; i < 26; i++)
+ { 
+ if(!used[i]) 
+ { 
+ keyTable[k / 5][k % 5] = 'A' + i;
+ k++;
+ } 
+ } 
+} 
+// Find position of character in key table 
+void findPosition(char ch, int *row, int *col) 
+{ 
+ int i, j;
+ if(ch == 'J') 
+ ch = 'I';
+ for(i = 0; i < 5; i++)
+ { 
+ for(j = 0; j < 5; j++)
+ { 
+ if(keyTable[i][j] == ch) 
+ { 
+ *row = i;
+ *col = j;
+ return;
+ } 
+ } 
+ } 
+} 
+// Encrypt plaintext 
+void encrypt(char text[]) 
+{ 
+ int i;
+ char prepared[100];
+ int len = 0;
+ // Prepare text 
+ for(i = 0; text[i] != '\0'; i++)
+ { 
+ if(isalpha(text[i])) 
+ { 
+ prepared[len++] = toupper(text[i]);
+ } 
+ } 
+ prepared[len] = '\0';
+ // Add X if odd length 
+ if(len % 2 != 0) 
+ { 
+ prepared[len++] = 'X';
+ prepared[len] = '\0';
+ } 
+ printf("\nCipher Text: ");
+ for(i = 0; i < len; i += 2)
+ { 
+ int r1, c1, r2, c2;
+ findPosition(prepared[i], &r1, &c1);
+ findPosition(prepared[i + 1], &r2, &c2);
+ if(r1 == r2) // Same row 
+ { 
+ printf("%c%c", 
+ keyTable[r1][(c1 + 1) % 5], 
+ keyTable[r2][(c2 + 1) % 5]);
+ } 
+ else if(c1 == c2) // Same column 
+ { 
+ printf("%c%c", 
+ keyTable[(r1 + 1) % 5][c1], 
+ keyTable[(r2 + 1) % 5][c2]);
+ } 
+ else // Rectangle rule 
+ { 
+ printf("%c%c", 
+ keyTable[r1][c2], 
+ keyTable[r2][c1]);
+ } 
+ } 
+} 
+int main() 
+{ 
+ char key[50], plaintext[100];
+ int i, j;
+ printf("Enter Key: ");
+ scanf("%s", key);
+ printf("Enter Plain Text: ");
+ scanf("%s", plaintext);
+ generateKeyTable(key);
+ printf("\nKey Table:\n");
+ for(i = 0; i < 5; i++)
+ { 
+ for(j = 0; j < 5; j++)
+ { 
+ printf("%c ", keyTable[i][j]);
+ } 
+ printf("\n");
+ } 
+ encrypt(plaintext);
+ return 0;
+}
+```
 
 Output:
+<img width="1177" height="1239" alt="image" src="https://github.com/user-attachments/assets/d1db8ee4-bc6e-4e66-b9a9-e35ee99b3c86" />
+
+Result:
+ THE PROGRAM WAS EXCUTED SUCCESSFULLY.
