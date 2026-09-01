@@ -159,7 +159,8 @@ int main()
 ```
 
 Output:
-<img width="1177" height="1239" alt="image" src="https://github.com/user-attachments/assets/d1db8ee4-bc6e-4e66-b9a9-e35ee99b3c86" />
+<img width="326" height="312" alt="image" src="https://github.com/user-attachments/assets/ea48ac59-4ff6-4da6-ac22-f1b3c939a894" />
+
 
 Result:
  THE PROGRAM WAS EXCUTED SUCCESSFULLY.
